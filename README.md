@@ -61,6 +61,32 @@ Key 已通过环境变量传给客户端，无需写进 JSON。
 > 也可以直接填字符串，但注意别把配置提交到公开仓库。
 > 想换供应商时，在 `env` 里覆盖 `VISION_BASE_URL` / `VISION_MODEL` 即可（见下方配置表）。
 
+## 接入 Codex（TOML 格式）
+
+Codex 的 MCP 配置在 `~/.codex/config.toml`（TOML 不是 JSON）。全局安装后只需：
+
+```toml
+# ~/.codex/config.toml
+[mcp_servers.vision-mcp]
+command = "vision-mcp"
+```
+
+用 npx 免安装版（显式传 env，Key 用 `${VISION_API_KEY}` 从环境变量读取、不落盘）：
+
+```toml
+# ~/.codex/config.toml
+[mcp_servers.vision-mcp]
+command = "npx"
+args = ["-y", "vision-mcp-node"]
+env = {
+  VISION_API_KEY = "${VISION_API_KEY}",
+  VISION_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  VISION_MODEL = "qwen3.7-plus"
+}
+```
+
+改完执行 `codex` 重启会话生效（或 `codex mcp list` 检查是否加载）。
+
 ## 配置（环境变量）
 
 | 变量 | 必填 | 默认值 |
