@@ -1,11 +1,18 @@
 # vision-mcp-node
 
+[![npm version](https://img.shields.io/npm/v/vision-mcp-node)](https://www.npmjs.com/package/vision-mcp-node)
+[![npm downloads](https://img.shields.io/npm/dm/vision-mcp-node)](https://www.npmjs.com/package/vision-mcp-node)
+[![license](https://img.shields.io/npm/l/vision-mcp-node)](https://github.com/sulghu/vision-mcp/blob/main/LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
+
 MCP 服务器：**直连远程多模态模型 API 识别图片 / OCR**，不经过任何本地代理。
 
 - 工具 `recognize_image(image, prompt?)` — 识别/描述图片内容
 - 工具 `ocr_image(image, language?)` — 从图片提取文字
+- 工具 `vision_version()` — 查看当前服务配置（模型/供应商/Key 状态）
 - 支持任意 **OpenAI 兼容**视觉端点（阿里云百炼、OpenAI、硅基流动等）
-- 图片输入：本地路径 / `http(s)://` URL / `data:` URL
+- 图片输入：本地路径 / `http(s)://` URL（默认直传不下载）/ `data:` URL
+- 大图自动压缩、输出截断自动重试、错误分类提示
 
 ## 快速开始（全局安装，推荐）
 
@@ -92,14 +99,24 @@ env = {
 | 变量 | 必填 | 默认值 |
 |---|---|---|
 | `VISION_API_KEY` | ✅ | —（也认 `DASHSCOPE_API_KEY` / `OPENAI_API_KEY`） |
-| `VISION_BASE_URL` | 否 | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
-| `VISION_MODEL` | 否 | `qwen3.7-plus` |
+| `VISION_PROVIDER` | 否 | `aliyun`（可选 `openai` / `siliconflow`，一键切换预设） |
+| `VISION_BASE_URL` | 否 | 随 `VISION_PROVIDER` 预设（也可显式覆盖） |
+| `VISION_MODEL` | 否 | 随 `VISION_PROVIDER` 预设（也可显式覆盖） |
 | `VISION_TIMEOUT` | 否 | `120000`（毫秒） |
-| `VISION_MAX_TOKENS` | 否 | `1024` |
+| `VISION_MAX_TOKENS` | 否 | `1024`（被截断自动翻倍重试） |
 | `VISION_ENABLE_THINKING` | 否 | `false`（qwen3 系列不开启深度思考，设 `true` 可开启） |
+| `VISION_MAX_IMAGE_MB` | 否 | `15`（超过自动压缩，需 sharp） |
+| `VISION_FORCE_DOWNLOAD` | 否 | `false`（http 图片默认直传 URL，设 `true` 强制下载内联） |
 
-换 OpenAI 官方：`VISION_BASE_URL=https://api.openai.com/v1` + `VISION_MODEL=gpt-4o`。
-换硅基流动：`VISION_BASE_URL=https://api.siliconflow.cn/v1` + `VISION_MODEL=Qwen/Qwen2.5-VL-72B-Instruct`。
+### 供应商预设（`VISION_PROVIDER`）
+
+| `VISION_PROVIDER` | 默认端点 | 默认模型 |
+|---|---|---|
+| `aliyun` | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen3.7-plus` |
+| `openai` | `https://api.openai.com/v1` | `gpt-4o` |
+| `siliconflow` | `https://api.siliconflow.cn/v1` | `Qwen/Qwen2.5-VL-72B-Instruct` |
+
+显式设置 `VISION_BASE_URL` / `VISION_MODEL` 会覆盖预设。
 
 ## 工具用法
 
