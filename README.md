@@ -61,7 +61,7 @@ export VISION_API_KEY=sk-xxxx
 ## 本地开发 / 调试
 
 ```bash
-git clone <你的仓库地址> && cd vision-mcp-node
+git clone https://github.com/sulghu/vision-mcp.git && cd vision-mcp-node
 npm install
 npm test                     # 端到端（本地假视觉 API，不需真实 Key）
 node server.js               # 以 stdio 启动，等 MCP 客户端连接
