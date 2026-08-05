@@ -7,16 +7,39 @@ MCP 服务器：**直连远程多模态模型 API 识别图片 / OCR**，不经�
 - 支持任意 **OpenAI 兼容**视觉端点（阿里云百炼、OpenAI、硅基流动等）
 - 图片输入：本地路径 / `http(s)://` URL / `data:` URL
 
-## 快速开始（无需安装）
+## 快速开始（全局安装，推荐）
 
 ```bash
-# 1. 设置 API Key（本包不内置、不硬编码任何 Key）
-export VISION_API_KEY=sk-xxxx
+# 1. 安装（只需一次）
+npm install -g vision-mcp-node
 
-# 2. 在 MCP 客户端配置里直接 npx 拉起（见下）
+# 2. 配置 API Key（默认已指向阿里云百炼 + qwen3.7-plus）
+export VISION_API_KEY=sk-你的Key
+# 永久生效可写入：echo 'export VISION_API_KEY=sk-你的Key' >> ~/.bashrc
+
+# 3. 验证安装
+npm ls -g vision-mcp-node      # 显示 vision-mcp-node@1.0.1
+vision-mcp                     # 以 stdio 启动，等 MCP 客户端连接（Ctrl+C 退出）
 ```
 
-在 `claude_desktop_config.json` / `mcp.json` / Reasonix 配置中：
+然后只需在 MCP 客户端配置里加一段最小配置：
+
+```json
+{
+  "mcpServers": {
+    "vision-mcp": {
+      "command": "vision-mcp",
+      "args": []
+    }
+  }
+}
+```
+
+Key 已通过环境变量传给客户端，无需写进 JSON。
+
+## 或者：npx 免安装即用
+
+不全局安装，直接在 `claude_desktop_config.json` / `mcp.json` / Reasonix 配置中用 `npx` 拉起：
 
 ```json
 {
@@ -36,6 +59,7 @@ export VISION_API_KEY=sk-xxxx
 
 > `"${VISION_API_KEY}"` 会让客户端读取你机器上的同名环境变量，**Key 不落盘**。
 > 也可以直接填字符串，但注意别把配置提交到公开仓库。
+> 想换供应商时，在 `env` 里覆盖 `VISION_BASE_URL` / `VISION_MODEL` 即可（见下方配置表）。
 
 ## 配置（环境变量）
 
