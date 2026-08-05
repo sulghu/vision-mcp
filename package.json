@@ -1,6 +1,6 @@
 {
   "name": "vision-mcp-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server: 直连远端多模态模型 API 识别图片/OCR（OpenAI 兼容，如阿里云百炼 qwen3-vl-plus / qwen3.7-plus），不经过本地代理",
   "type": "module",
   "main": "server.js",
