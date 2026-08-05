@@ -1,0 +1,36 @@
+{
+  "name": "vision-mcp-node",
+  "version": "1.0.0",
+  "description": "MCP server: 直连远端多模态模型 API 识别图片/OCR（OpenAI 兼容，如阿里云百炼 qwen3-vl-plus / qwen3.7-plus），不经过本地代理",
+  "type": "module",
+  "main": "server.js",
+  "bin": {
+    "vision-mcp": "./server.js"
+  },
+  "files": [
+    "server.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_e2e.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "vision",
+    "multimodal",
+    "ocr",
+    "image-recognition",
+    "qwen",
+    "openai-compatible"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0"
+  }
+}
